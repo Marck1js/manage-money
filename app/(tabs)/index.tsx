@@ -1,70 +1,171 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Platform,
+  View,
+  Text,
+  Button,
+  Pressable,
+} from "react-native";
+import { useState } from "react";
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import { HelloWave } from "@/components/HelloWave";
+import ParallaxScrollView from "@/components/ParallaxScrollView";
+import { ThemedText } from "@/components/ThemedText";
+import { ThemedView } from "@/components/ThemedView";
+import { SafeAreaView } from "react-native-safe-area-context";
+import FirstModal from "@/components/modals/FirstModal";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import App from "@/components/modals/FirstModal";
+import Operations from "@/components/operations/Operations";
+import { Notification, Settings } from "@/svg";
+import Payment from "@/components/operations/Payment";
 
 export default function HomeScreen() {
+  const [modalVisible, setModalVisible] = useState(false);
+
+  let amount = 680116;
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <SafeAreaView style={{ backgroundColor: "#212F3C", flex: 1 }}>
+      <View style={styles.nav}>
+        {/* Avatar Component */}
+        <View style={styles.avatar}>
+          <Text className="text-[30px] text-blue-600 font-bold">S</Text>
+        </View>
+        <View style={styles.boxName} className="flex-1">
+          <Text style={styles.textName} className="text-[#B2BABB]">
+            {" "}
+            Hello
+          </Text>
+          <Text style={styles.textName} className="text-[#FBFCFC] pl-[10px]">
+            Marco
+          </Text>
+        </View>
+
+        <View className="flex-row mr-[10px] gap-2">
+          <View className="h-[40px] w-[40px] bg-white rounded-[50px] justify-center items-center">
+            <Settings />
+          </View>
+          <View className="h-[40px] w-[40px] bg-white rounded-[50px] justify-center items-center">
+            <Notification />
+          </View>
+        </View>
+      </View>
+
+      <View className="h-[120px]  justify-center">
+        <Text className="ml-[10px] text-[18px] text-[#BDC3C7]">
+          Available on card
+        </Text>
+        <View className="flex-row ml-[10px]">
+          <Text
+            style={styles.currentAccount}
+            className="text-white tracking-wider"
+          >
+            $
+            {
+              amount
+                .toLocaleString("en-US", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })
+                .split(".")[0]
+            }
+          </Text>
+          <Text style={styles.currentAccount} className="text-[#616A6B]">
+            .
+            {
+              amount
+                .toLocaleString("en-US", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })
+                .split(".")[1]
+            }
+          </Text>
+        </View>
+      </View>
+
+      <View className="flex-row justify-between mx-[10px]">
+        <View className="bg-blue-700" style={styles.boxBudget}>
+          <Text className="text-white">
+            ${(amount * 0.5).toLocaleString("es-US")}
+          </Text>
+        </View>
+        <View className="bg-red-700" style={styles.boxBudget}>
+          <Text className="text-white">
+            ${(amount * 0.3).toLocaleString("es-US")}
+          </Text>
+        </View>
+        <View className="bg-green-700" style={styles.boxBudget}>
+          <Text className="text-white">
+            ${(amount * 0.2).toLocaleString("es-US")}
+          </Text>
+        </View>
+      </View>
+
+      <Text className="ml-[10px] mt-[20px] text-[20px] text-[#BDC3C7]">
+        Actividad
+      </Text>
+
+      <Operations />
+      {/* Card */}
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  nav: {
+    alignItems: "center",
+    height: 50,
+    marginBottom: 5,
+    flexDirection: "row",
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  avatar: {
+    width: 45,
+    height: 45,
+    borderRadius: 50,
+    backgroundColor: "#fff",
+    marginLeft: 10,
+    justifyContent: "center",
+    alignItems: "center",
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  textAvatar: {},
+  boxName: {
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+
+    width: 80,
+  },
+  textName: {},
+  userName: {},
+  boxAmount: {
+    borderRadius: 10,
+    width: 180,
+    height: 80,
+    backgroundColor: "#418A08",
+    alignItems: "center",
+    justifyContent: "center",
+    alignSelf: "center",
+  },
+  textAmount: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#fff",
+    fontStyle: "italic",
+  },
+  currentAccount: {
+    fontSize: 50,
+  },
+  boxBudget: {
+    height: 45,
+    flex: 1,
+    marginHorizontal: 5,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 8,
+    borderColor: "#ffffff80",
+    borderWidth: 1,
   },
 });
